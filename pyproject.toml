@@ -35,6 +35,7 @@ dependencies = [
   "coverage[toml]>=6.5",
   "jinja2"
   "fastapi",
+  "python-multipart",
   "pytest",
   "python",
   "pydantic",
