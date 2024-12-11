@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
+import os
 
 app = FastAPI()
 
@@ -14,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-templates = Jinja2Templates(directory="src/yatrabook/templates")
+templates = Jinja2Templates(os.path.join(os.path.dirname(__file__), "templates"))
 
 ROWS = 12  # 11 rows with 7 seats + 1 row with 3 seats
 SEATS_PER_ROW = [7] * 11 + [3]
