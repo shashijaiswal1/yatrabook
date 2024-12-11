@@ -7,7 +7,7 @@ To run the app locally
    - git clone git@github.com:shashijaiswal1/yatrabook.git
 2. move to project root folder
 3. run command
-   - uvicorn src.yatrabook.book_seats:app --reload
+   - uvicorn src.yatrabook.main:app --reload
 
 ## Install
 
