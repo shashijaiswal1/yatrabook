@@ -37,7 +37,8 @@ dependencies = [
   "fastapi",
   "pytest",
   "python",
-  "pydantic"
+  "pydantic",
+  "uvicorn"
 ]
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
