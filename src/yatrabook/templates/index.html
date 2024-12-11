@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Seat Booking</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        .seats { display: grid; grid-template-columns: repeat(7, 40px); gap: 10px; justify-content: center; margin: 20px auto; }
+        .seat { width: 40px; height: 40px; background: #5bd559; color: white; display: flex; justify-content: center; align-items: center; border-radius: 5px; cursor: pointer; }
+        .seat.booked { background: #a3a3a3; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <h1>Train Seat Booking</h1>
+    <form id="bookingForm">
+        <label for="seats">Number of Seats to Book (1–7):</label>
+        <input type="number" id="seats" min="1" max="7" required>
+        <button type="submit">Book</button>
+    </form>
+    <div id="message"></div>
+    <div class="seats" id="seating"></div>
+
+    <script>
+        const API_URL = "http://127.0.0.1:8000";
+
+        async function fetchSeats() {
+            const response = await fetch(`${API_URL}/seats`);
+            const data = await response.json();
+            renderSeats(data.seats);
+        }
+
+        function renderSeats(seats) {
+            const seating = document.getElementById("seating");
+            seating.innerHTML = "";
+            seats.forEach((row, rowIndex) => {
+                row.forEach((seat, seatIndex) => {
+                    const seatDiv = document.createElement("div");
+                    seatDiv.className = `seat ${seat === 1 ? "booked" : ""}`;
+                    seatDiv.textContent = `R${rowIndex + 1}S${seatIndex + 1}`;
+                    seating.appendChild(seatDiv);
+                });
+            });
+        }
+
+        document.getElementById("bookingForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const seatsRequired = document.getElementById("seats").value;
+            const response = await fetch(`${API_URL}/book`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ seats_required: parseInt(seatsRequired) }),
+            });
+
+            const messageDiv = document.getElementById("message");
+            if (response.ok) {
+                const data = await response.json();
+                messageDiv.textContent = `Successfully booked: ${data.booked_seats.join(", ")}`;
+                fetchSeats();
+            } else {
+                const error = await response.json();
+                messageDiv.textContent = `Error: ${error.detail}`;
+            }
+        });
+
+        fetchSeats();
+    </script>
+</body>
+</html>
