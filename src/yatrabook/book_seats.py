@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="src/yatrabook/templates")
 
 ROWS = 12  # 11 rows with 7 seats + 1 row with 3 seats
 SEATS_PER_ROW = [7] * 11 + [3]
